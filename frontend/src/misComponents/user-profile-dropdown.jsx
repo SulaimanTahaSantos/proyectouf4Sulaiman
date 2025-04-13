@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, Settings, User, Home } from "lucide-react";
+import { LogOut, Settings, Home } from "lucide-react";
 
 import {
     DropdownMenu,
@@ -40,7 +40,10 @@ export function UserProfileDropdown({
                     className="relative h-10 w-10 rounded-full"
                 >
                     <Avatar className="h-10 w-10">
-                        <AvatarImage src={userImage} alt={userName} />
+                        <AvatarImage
+                            src={userImage || "/placeholder.svg"}
+                            alt={userName}
+                        />
                         <AvatarFallback className="bg-gray-200 text-gray-700">
                             {(userName || "Usuario")
                                 .substring(0, 2)
@@ -62,13 +65,13 @@ export function UserProfileDropdown({
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleHomeClick}>
                         <Home className="mr-2 h-4 w-4" />
-                        <span onClick={handleHomeClick}>Home</span>
+                        <span>Home</span>
                     </DropdownMenuItem>
-                    <DropdownMenuItem>
+                    <DropdownMenuItem onClick={handleSettingsClick}>
                         <Settings className="mr-2 h-4 w-4" />
-                        <span onClick={handleSettingsClick}>Configuración</span>
+                        <span>Configuración</span>
                     </DropdownMenuItem>
                 </DropdownMenuGroup>
                 <DropdownMenuSeparator />
