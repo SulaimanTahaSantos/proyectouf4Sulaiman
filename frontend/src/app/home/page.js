@@ -32,6 +32,9 @@ export default function Home() {
     const handleHomeClick = () => {
         router.push("/home");
     }
+    const handleModulesClick = () => {
+        router.push("/modulos");
+    }
 
 
     return (
@@ -72,7 +75,7 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer">
+                    <div onClick={handleModulesClick} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer">
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                             Módulos
                         </h2>
