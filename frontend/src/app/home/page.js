@@ -43,6 +43,9 @@ export default function Home() {
     const handleGroupsClick = () => {
         router.push("/grupos");
     }
+    const handleGradesClick = () => {
+        router.push("/notas");
+    }
 
 
     return (
@@ -119,7 +122,10 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer">
+                    <div
+                        onClick={handleGradesClick}
+                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                    >
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                             Notas
                         </h2>
