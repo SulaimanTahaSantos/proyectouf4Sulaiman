@@ -40,6 +40,10 @@ export default function Home() {
         router.push("/entregas");
     }
 
+    const handleGroupsClick = () => {
+        router.push("/grupos");
+    }
+
 
     return (
         <main className="min-h-screen bg-gray-50">
@@ -79,7 +83,10 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div onClick={handleModulesClick} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer">
+                    <div
+                        onClick={handleModulesClick}
+                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                    >
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                             Módulos
                         </h2>
@@ -88,7 +95,10 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div onClick={handleDeliveriesClick} className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer">
+                    <div
+                        onClick={handleDeliveriesClick}
+                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                    >
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                             Entregas
                         </h2>
@@ -97,7 +107,10 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer">
+                    <div
+                        onClick={handleGroupsClick}
+                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                    >
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                             Grupos
                         </h2>
