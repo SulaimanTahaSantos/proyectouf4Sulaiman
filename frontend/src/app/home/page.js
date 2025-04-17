@@ -49,6 +49,9 @@ export default function Home() {
     const handleRubricsClick = () => {
         router.push("/rubricas");
     }
+    const handleStatementsClick = () => {
+        router.push("/enunciados");
+    }
 
 
     return (
@@ -150,7 +153,10 @@ export default function Home() {
                     </div>
                 </div>
 
-                <div className="mt-12 bg-white rounded-lg shadow-md p-6">
+                <div
+                    onClick={handleStatementsClick}
+                    className="mt-12 bg-white rounded-lg shadow-md p-6"
+                >
                     <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                         Enunciados
                     </h2>
