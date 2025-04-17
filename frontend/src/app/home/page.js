@@ -46,6 +46,9 @@ export default function Home() {
     const handleGradesClick = () => {
         router.push("/notas");
     }
+    const handleRubricsClick = () => {
+        router.push("/rubricas");
+    }
 
 
     return (
@@ -134,7 +137,10 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer">
+                    <div
+                        onClick={handleRubricsClick}
+                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                    >
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                             Rúbricas
                         </h2>
