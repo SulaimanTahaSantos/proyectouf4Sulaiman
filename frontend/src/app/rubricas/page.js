@@ -30,7 +30,7 @@ export default function Rubricas() {
                 tipo: "application/pdf",
                 tamaño: 2457600, 
                 url: "#", 
-                fechaSubida: date.now(),
+                fechaSubida: new Date().toLocaleDateString("es-ES"),
             },
             criterios: [
                 {
