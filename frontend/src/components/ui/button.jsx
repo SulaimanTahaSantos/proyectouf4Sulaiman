@@ -39,8 +39,8 @@ function Button({
   className,
   variant,
   size,
-  OnClick,
   asChild = false,
+  OnClick,
   ...props
 }) {
   const Comp = asChild ? Slot : "button"
