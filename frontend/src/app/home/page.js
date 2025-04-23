@@ -32,6 +32,26 @@ export default function Home() {
     const handleHomeClick = () => {
         router.push("/home");
     }
+    const handleModulesClick = () => {
+        router.push("/modulos");
+    }
+
+    const handleDeliveriesClick = () => {
+        router.push("/entregas");
+    }
+
+    const handleGroupsClick = () => {
+        router.push("/grupos");
+    }
+    const handleGradesClick = () => {
+        router.push("/notas");
+    }
+    const handleRubricsClick = () => {
+        router.push("/rubricas");
+    }
+    const handleStatementsClick = () => {
+        router.push("/enunciados");
+    }
 
 
     return (
@@ -72,7 +92,10 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer">
+                    <div
+                        onClick={handleModulesClick}
+                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                    >
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                             Módulos
                         </h2>
@@ -81,7 +104,10 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer">
+                    <div
+                        onClick={handleDeliveriesClick}
+                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                    >
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                             Entregas
                         </h2>
@@ -90,7 +116,10 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer">
+                    <div
+                        onClick={handleGroupsClick}
+                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                    >
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                             Grupos
                         </h2>
@@ -99,7 +128,10 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer">
+                    <div
+                        onClick={handleGradesClick}
+                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                    >
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                             Notas
                         </h2>
@@ -108,7 +140,10 @@ export default function Home() {
                         </p>
                     </div>
 
-                    <div className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer">
+                    <div
+                        onClick={handleRubricsClick}
+                        className="bg-white rounded-lg shadow-md p-6 hover:shadow-lg transition-shadow cursor-pointer"
+                    >
                         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                             Rúbricas
                         </h2>
@@ -118,7 +153,10 @@ export default function Home() {
                     </div>
                 </div>
 
-                <div className="mt-12 bg-white rounded-lg shadow-md p-6">
+                <div
+                    onClick={handleStatementsClick}
+                    className="mt-12 bg-white rounded-lg shadow-md p-6"
+                >
                     <h2 className="text-2xl font-semibold text-gray-800 mb-4">
                         Enunciados
                     </h2>
