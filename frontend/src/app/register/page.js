@@ -294,16 +294,13 @@ export default function Registro() {
                                     </SelectTrigger>
                                     <SelectContent>
                                         <SelectItem value="admin">
-                                            Administrador
+                                            Admin
                                         </SelectItem>
                                         <SelectItem value="user">
                                             Usuario
                                         </SelectItem>
-                                        <SelectItem value="editor">
-                                            Editor
-                                        </SelectItem>
-                                        <SelectItem value="viewer">
-                                            Visualizador
+                                        <SelectItem value="profesor">
+                                            Profesor
                                         </SelectItem>
                                     </SelectContent>
                                 </Select>

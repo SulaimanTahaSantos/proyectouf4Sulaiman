@@ -56,4 +56,20 @@ class UserController extends Controller
         }
     }
 
+    public function login(Request $request)
+{
+    $credentials = $request->only('email', 'password');
+
+    $user = User::where('email', $credentials['email'])->first();
+
+    if (!$user || !Hash::check($credentials['password'], $user->password)) {
+        return response()->json(['message' => 'Credenciales incorrectas'], 401);
+    }
+
+    return response()->json([
+        'message' => 'Inicio de sesión exitoso',
+        'user' => $user,
+    ]);
+}
+
 }
