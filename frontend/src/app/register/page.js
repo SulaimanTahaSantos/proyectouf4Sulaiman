@@ -24,9 +24,12 @@ import {
     LucideUsers,
     CreditCardIcon as LucideIdCard,
 } from "lucide-react";
+import axios from "axios";
 
 export default function Registro() {
     const [showPassword, setShowPassword] = useState(false);
+    const [error, setError] = useState(null);
+    const [success, setSuccess] = useState(false);
     const [formData, setFormData] = useState({
         nombre: "",
         apellidos: "",
@@ -35,7 +38,6 @@ export default function Registro() {
         rol: "",
         dni: "",
     });
-    
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -43,6 +45,7 @@ export default function Registro() {
             ...prev,
             [name]: value,
         }));
+        setError(null);
     };
 
     const handleRolChange = (value) => {
@@ -50,11 +53,53 @@ export default function Registro() {
             ...prev,
             rol: value,
         }));
+        setError(null);
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log("Registrando usuario:", formData);
+        setError(null);
+        setSuccess(false);
+
+        try {
+            const response = await axios.post(
+                ` 'http://localhost:8000'/api/register`,
+                formData,
+                {
+                    withCredentials: true,
+                }
+            );
+
+            setSuccess(true);
+            console.log("Usuario registrado:", response.data);
+            
+            setFormData({
+                nombre: "",
+                apellidos: "",
+                email: "",
+                password: "",
+                rol: "",
+                dni: "",
+            });
+
+            setTimeout(() => {
+                window.location.href = '/login';
+            }, 2000);
+
+        } catch (error) {
+            console.error("Error al registrar el usuario:", error);
+            if (error.response) {
+                setError(error.response.data.message || 'Error al registrar el usuario');
+                if (error.response.data.errors) {
+                    const validationErrors = Object.values(error.response.data.errors).flat();
+                    setError(validationErrors.join('\n'));
+                }
+            } else if (error.request) {
+                setError('No se pudo conectar con el servidor');
+            } else {
+                setError('Error al procesar la solicitud');
+            }
+        }
     };
 
     return (
@@ -135,6 +180,18 @@ export default function Registro() {
                             Completa tus datos para registrarte
                         </p>
                     </div>
+
+                    {error && (
+                        <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                            {error}
+                        </div>
+                    )}
+
+                    {success && (
+                        <div className="mb-4 p-4 bg-green-100 border border-green-400 text-green-700 rounded">
+                            Usuario registrado exitosamente. Redirigiendo...
+                        </div>
+                    )}
 
                     <form onSubmit={handleSubmit} className="space-y-5">
                         <motion.div

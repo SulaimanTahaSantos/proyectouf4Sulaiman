@@ -19,7 +19,7 @@ import { Button } from "@/components/ui/button";
 export function UserProfileDropdown({
     userEmail = "usuario@ejemplo.com",
     userImage = "",
-    userName = "Usuario", // Valor predeterminado si userName es null o undefined
+    userName = "Usuario",
     handleSettingsClick,
     handleHomeClick,
 }) {

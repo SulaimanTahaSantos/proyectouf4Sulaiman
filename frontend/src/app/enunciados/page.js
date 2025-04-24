@@ -74,7 +74,6 @@ export default function EnunciadosPage() {
         },
     ]);
 
-    // Estados para controlar los diálogos
     const [viewOpen, setViewOpen] = useState(false);
     const [editOpen, setEditOpen] = useState(false);
     const [deleteOpen, setDeleteOpen] = useState(false);
@@ -95,7 +94,6 @@ export default function EnunciadosPage() {
         setUserName(name || "Usuario");
     }, []);
 
-    // Funciones para manejar acciones
     const handleView = (enunciado) => {
         setSelectedEnunciado(enunciado);
         setViewOpen(true);
@@ -133,7 +131,7 @@ export default function EnunciadosPage() {
                 )
             );
         } else {
-            const newId = `ENS${String(enunciados.length + 1).padStart(
+            const newId = `id${String(enunciados.length + 1).padStart(
                 3,
                 "0"
             )}`;
@@ -325,7 +323,6 @@ export default function EnunciadosPage() {
                 </Table>
             </div>
 
-            {/* Diálogos */}
             <ViewDialog
                 open={viewOpen}
                 onOpenChange={setViewOpen}
