@@ -56,20 +56,41 @@ class UserController extends Controller
         }
     }
 
-    public function login(Request $request)
-{
-    $credentials = $request->only('email', 'password');
+    public function register(Request $request){
+        try {
+            $request->validate([
+                'nombre' => 'required|string|max:255',
+                'apellidos' => 'required|string|max:255',
+                'email' => 'required|string|email|max:255|unique:users,email',
+                'password' => 'required|string|min:8',
+                'dni' => 'required|string|unique:users,dni',
+                'rol' => 'required|string|in:user,admin'
+            ]);
 
-    $user = User::where('email', $credentials['email'])->first();
+            $user = new User();
+            $user->name = $request->input('nombre');
+            $user->surname = $request->input('apellidos');
+            $user->email = $request->input('email');
+            $user->password = Hash::make($request->input('password'));
+            $user->dni = $request->input('dni');
+            $user->rol = $request->input('rol');
+            $user->save();
 
-    if (!$user || !Hash::check($credentials['password'], $user->password)) {
-        return response()->json(['message' => 'Credenciales incorrectas'], 401);
+            return response()->json([
+                'message' => 'Usuario registrado exitosamente',
+                'user' => $user
+            ], 201);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            return response()->json([
+                'message' => 'Error al registrar el usuario',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
-
-    return response()->json([
-        'message' => 'Inicio de sesión exitoso',
-        'user' => $user,
-    ]);
-}
 
 }
