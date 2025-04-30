@@ -63,10 +63,12 @@ export default function Registro() {
 
         try {
             const response = await axios.post(
-                ` 'http://localhost:8000'/api/register`,
+                ` 'https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/register'`,
                 formData,
                 {
-                    withCredentials: true,
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
                 }
             );
 
@@ -201,7 +203,7 @@ export default function Registro() {
                             className="space-y-2"
                         >
                             <Label
-                                htmlFor="nombre"
+                                htmlFor="name"
                                 className="text-gray-700 font-medium"
                             >
                                 Nombre
@@ -212,8 +214,8 @@ export default function Registro() {
                                 </div>
                                 <Input
                                     type="text"
-                                    id="nombre"
-                                    name="nombre"
+                                    id="name"
+                                    name="name"
                                     value={formData.nombre}
                                     onChange={handleChange}
                                     placeholder="Tu nombre"
@@ -230,7 +232,7 @@ export default function Registro() {
                             className="space-y-2"
                         >
                             <Label
-                                htmlFor="apellidos"
+                                htmlFor="surname"
                                 className="text-gray-700 font-medium"
                             >
                                 Apellidos
@@ -241,8 +243,8 @@ export default function Registro() {
                                 </div>
                                 <Input
                                     type="text"
-                                    id="apellidos"
-                                    name="apellidos"
+                                    id="surname"
+                                    name="surname"
                                     value={formData.apellidos}
                                     onChange={handleChange}
                                     placeholder="Tus apellidos"
