@@ -31,8 +31,8 @@ export default function Registro() {
     const [error, setError] = useState(null);
     const [success, setSuccess] = useState(false);
     const [formData, setFormData] = useState({
-        nombre: "",
-        apellidos: "",
+        name: "",
+        surname: "",
         email: "",
         password: "",
         rol: "",
@@ -62,19 +62,31 @@ export default function Registro() {
         setSuccess(false);
 
         try {
-            const response = await axios.post(
-                ` 'https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/register'`,
-                formData,
+            const response = await fetch(
+                "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/register",
                 {
+                    method: "POST",
                     headers: {
                         "Content-Type": "application/json",
                     },
+                    body: JSON.stringify(formData),
                 }
             );
 
+            const data = await response.json();
+
+            if (!response.ok) {
+                let errorMsg = data.message || "Error al registrar el usuario";
+                if (data.errors) {
+                    const validationErrors = Object.values(data.errors).flat();
+                    errorMsg = validationErrors.join("\n");
+                }
+                throw new Error(errorMsg);
+            }
+
             setSuccess(true);
-            console.log("Usuario registrado:", response.data);
-            
+            console.log("Usuario registrado:", data);
+
             setFormData({
                 name: "",
                 surname: "",
@@ -85,24 +97,14 @@ export default function Registro() {
             });
 
             setTimeout(() => {
-                window.location.href = '/login';
+                window.location.href = "/login";
             }, 2000);
-
         } catch (error) {
             console.error("Error al registrar el usuario:", error);
-            if (error.response) {
-                setError(error.response.data.message || 'Error al registrar el usuario');
-                if (error.response.data.errors) {
-                    const validationErrors = Object.values(error.response.data.errors).flat();
-                    setError(validationErrors.join('\n'));
-                }
-            } else if (error.request) {
-                setError('No se pudo conectar con el servidor');
-            } else {
-                setError('Error al procesar la solicitud');
-            }
+            setError(error.message || "Error al procesar la solicitud");
         }
     };
+
 
     return (
         <div className="min-h-screen flex flex-col md:flex-row">
@@ -216,7 +218,7 @@ export default function Registro() {
                                     type="text"
                                     id="name"
                                     name="name"
-                                    value={formData.nombre}
+                                    value={formData.name}
                                     onChange={handleChange}
                                     placeholder="Tu nombre"
                                     className="pl-10 py-5 bg-white border-gray-200"
@@ -245,7 +247,7 @@ export default function Registro() {
                                     type="text"
                                     id="surname"
                                     name="surname"
-                                    value={formData.apellidos}
+                                    value={formData.surname}
                                     onChange={handleChange}
                                     placeholder="Tus apellidos"
                                     className="pl-10 py-5 bg-white border-gray-200"
