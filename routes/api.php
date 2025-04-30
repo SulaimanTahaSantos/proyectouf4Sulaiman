@@ -9,10 +9,10 @@ use App\Http\Controllers\AuthController;
 //     return $request->user();
 // });
 
-function retornarMensaje($mensaje){
+function RetornarMensaje($mensaje){
     return response()->json(['mensaje' => $mensaje]);
 }
-
+  
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/users', [UserController::class, 'store']);
@@ -20,6 +20,4 @@ Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
-Route::get('/login',retornarMensaje("Pagina login") );
-
-
+Route::get('/login', RetornarMensaje('Login successful'));
