@@ -63,7 +63,7 @@ export default function Registro() {
 
         try {
             const response = await fetch(
-                "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/register",
+                "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/registro",
                 {
                     method: "POST",
                     headers: {
