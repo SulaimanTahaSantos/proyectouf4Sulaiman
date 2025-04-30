@@ -12,7 +12,7 @@ use App\Http\Controllers\AuthController;
 function RetornarMensaje($mensaje){
     return response()->json(['mensaje' => $mensaje]);
 }
-
+  
 Route::get('/users', [UserController::class, 'index']);
 Route::get('/users/{id}', [UserController::class, 'show']);
 Route::post('/users', [UserController::class, 'store']);
@@ -21,7 +21,3 @@ Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
 Route::get('/login', RetornarMensaje('Login successful'));
-
-
-
-
