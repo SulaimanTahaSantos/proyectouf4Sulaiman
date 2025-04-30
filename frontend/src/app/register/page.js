@@ -76,8 +76,8 @@ export default function Registro() {
             console.log("Usuario registrado:", response.data);
             
             setFormData({
-                nombre: "",
-                apellidos: "",
+                name: "",
+                surname: "",
                 email: "",
                 password: "",
                 rol: "",
