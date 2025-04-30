@@ -45,6 +45,8 @@ export function TablaGrupos() {
         { id: 4, nombre: "1ºSMR2", modulo: "SMR", alumnos: 25 },
     ]);
 
+    const [users, setUsers] = useState([]);
+
     const [userEmail, setUserEmail] = useState(null);
     const [userImage, setUserImage] = useState(null);
     const [userName, setUserName] = useState(null);
@@ -176,6 +178,27 @@ export function TablaGrupos() {
     const totalAlumnos = grupos.reduce((sum, grupo) => sum + grupo.alumnos, 0);
     const modulosUnicos = [...new Set(grupos.map((grupo) => grupo.modulo))];
 
+
+  const fetchUsers = async () => {
+      try {
+          const response = await fetch(
+              "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/users"
+          );
+
+         console.log("Response status:", response); 
+          let data = await response.json();
+          console.log("Fetched users:", data); 
+          setUsers(data);
+      } catch (error) {
+          console.error("Error fetching users:", error.message);
+      }
+  };
+
+  useEffect(() => {
+      fetchUsers(); 
+  }, []);
+
+
     return (
         <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
             <header className="sticky top-0 z-10 bg-white dark:bg-gray-800 border-b shadow-sm">
@@ -261,6 +284,62 @@ export function TablaGrupos() {
                     </CardHeader>
                     <CardContent>
                         <div className="rounded-md border">
+                            <Table>
+                                <TableHeader>
+                                    <TableRow>
+                                        <TableHead className="font-bold">
+                                            Nombre
+                                        </TableHead>
+                                        <TableHead className="font-bold">
+                                            Apellido
+                                        </TableHead>
+                                        <TableHead className="font-bold">
+                                            Correo
+                                        </TableHead>
+                                        <TableHead className="font-bold">
+                                            dni
+                                        </TableHead>
+                                        <TableHead className="font-bold">
+                                            Rol
+                                        </TableHead>
+                                        <TableHead className="font-bold text-right">
+                                            Creacion
+                                        </TableHead>
+                                        <TableHead className="font-bold text-right">
+                                            Actualizacion
+                                        </TableHead>
+                                        </TableRow>
+                                </TableHeader>
+                                <TableBody>
+                                    {users.map((user) => (
+                                        <TableRow key={user.id}>
+                                            <TableCell className="font-medium">
+                                                {user.name}
+                                            </TableCell>
+                                            <TableCell>
+                                                {user.surname}
+                                            </TableCell>
+                                            <TableCell>
+                                                {user.email}
+                                            </TableCell>
+                                            <TableCell>
+                                                {user.dni}
+                                            </TableCell>
+                                            <TableCell>
+                                                {user.rol}
+                                            </TableCell>
+                                            <TableCell>
+                                                {user.created_at}
+                                            </TableCell>
+                                            <TableCell>
+                                                {user.updated_at}
+                                            </TableCell>
+                                        </TableRow>
+                                    ))}
+                                </TableBody>
+                            </Table>
+                            
+
                             <Table>
                                 <TableHeader>
                                     <TableRow>
