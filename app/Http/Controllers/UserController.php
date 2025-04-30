@@ -59,17 +59,17 @@ class UserController extends Controller
     public function register(Request $request){
         try {
             $request->validate([
-                'nombre' => 'required|string|max:255',
-                'apellidos' => 'required|string|max:255',
+                'name' => 'required|string|max:255',
+                'surname' => 'required|string|max:255',
                 'email' => 'required|string|email|max:255|unique:users,email',
                 'password' => 'required|string|min:8',
                 'dni' => 'required|string|unique:users,dni',
-                'rol' => 'required|string|in:user,admin'
+                'rol' => 'required|string|in:user,alumno,admin'
             ]);
 
             $user = new User();
-            $user->name = $request->input('nombre');
-            $user->surname = $request->input('apellidos');
+            $user->name = $request->input('name');
+            $user->surname = $request->input('surname');
             $user->email = $request->input('email');
             $user->password = Hash::make($request->input('password'));
             $user->dni = $request->input('dni');
