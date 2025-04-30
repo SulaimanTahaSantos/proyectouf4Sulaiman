@@ -114,7 +114,6 @@ export default function NotasPage() {
         setShowToast(true);
     };
 
-    // Función para manejar la subida de archivos
     const handleFileUpload = (e, isEditing = false) => {
         const file = e.target.files[0];
         if (!file) return;
@@ -152,7 +151,6 @@ export default function NotasPage() {
     };
 
     const handleInsertarNota = () => {
-        // Validación básica
         if (
             !nuevaNota.alumno ||
             !nuevaNota.evaluador ||

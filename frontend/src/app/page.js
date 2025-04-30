@@ -24,27 +24,37 @@ export default function Login() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+ const handleSubmit = async (e) => {
+     e.preventDefault();
 
-        const userFound = usuarios.find(
-            (user) => user.email === email && user.password === password
-        );
+     try {
+         const response = await fetch(
+             "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/login",
+             {
+                 method: "POST",
+                 headers: {
+                     "Content-Type": "application/json",
+                 },
+                 body: JSON.stringify({ email, password }),
+             }
+         );
 
-        if (userFound) {
-            console.log("Inicio de sesión exitoso");
-            console.log("Bienvenido,", userFound.email);
+         if (!response.ok) {
+             throw new Error("Credenciales inválidas");
+         }
 
-            sessionStorage.setItem("userEmail", userFound.email);
-            sessionStorage.setItem("userName", userFound.name); 
-            sessionStorage.setItem("userImage", userFound.image); 
+         const data = await response.json();
 
-            router.push("/home");
-        } else {
-            console.log("Error de inicio de sesión");
-            alert("Email o contraseña incorrectos");
-        }
-    };
+         sessionStorage.setItem("userEmail", data.user.email);
+         sessionStorage.setItem("userName", data.user.name);
+         sessionStorage.setItem("userRol", data.user.rol); 
+
+         router.push("/home");
+     } catch (err) {
+         alert("Email o contraseña incorrectos");
+     }
+ };
+
 
     return (
         <div className="min-h-screen flex flex-col md:flex-row">
