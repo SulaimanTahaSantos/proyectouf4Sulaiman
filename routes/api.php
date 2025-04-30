@@ -20,4 +20,6 @@ Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::post('/register', [UserController::class, 'register']);
 Route::post('/login', [UserController::class, 'login']);
-Route::get('/login', RetornarMensaje('Login successful'));
+Route::get('/login', function () {
+    return RetornarMensaje('Login successful');
+});
