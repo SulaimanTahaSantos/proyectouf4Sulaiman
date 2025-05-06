@@ -92,23 +92,23 @@ class UserController extends Controller
             ], 500);
         }
     }
+public function inicioSesion(Request $request)
+{
+    $request->validate([
+        'email' => 'required|email',
+        'password' => 'required'
+    ]);
 
-    public function inicioSesion(Request $request)
-    {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+    $user = User::where('email', $request->email)->first();
 
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Credenciales inválidas'], 401);
-        }
-
-        return response()->json([
-            'message' => 'Inicio de sesión exitoso',
-            'user' => $user
-        ]);
+    if (!$user || $request->password !== $user->password) {
+        return response()->json(['message' => 'Credenciales inválidas'], 401);
     }
+
+    return response()->json([
+        'message' => 'Inicio de sesión exitoso',
+        'user' => $user
+    ]);
+}
+
 }
