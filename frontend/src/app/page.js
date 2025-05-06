@@ -41,21 +41,13 @@ export default function Login() {
 
          const data = await response.json();
 
-         if (!response.ok) {
-             throw new Error(data.message || "Error al iniciar sesión");
-         }
+         sessionStorage.setItem("userEmail", data.user.email);
+         sessionStorage.setItem("userName", data.user.name);
+         sessionStorage.setItem("userRol", data.user.rol); 
 
-         if (data.user) {
-             sessionStorage.setItem("userEmail", data.user.email);
-             sessionStorage.setItem("userName", data.user.name);
-             sessionStorage.setItem("userRol", data.user.rol);
-             router.push("/home");
-         } else {
-             throw new Error("Respuesta inválida del servidor");
-         }
+         router.push("/home");
      } catch (err) {
-         console.error("Error de inicio de sesión:", err);
-         alert(err.message || "Error al iniciar sesión");
+         alert("Email o contraseña incorrectos");
      }
  };
 
