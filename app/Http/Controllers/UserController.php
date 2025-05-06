@@ -92,8 +92,6 @@ class UserController extends Controller
             ], 500);
         }
     }
-use Illuminate\Support\Facades\Hash;
-
 public function inicioSesion(Request $request)
 {
     $request->validate([
@@ -101,7 +99,7 @@ public function inicioSesion(Request $request)
         'password' => 'required'
     ]);
 
-    $user = User::where('email', $request->email)->first();
+    $user = User::where('email', $request->input('email'))->first();
 
     if (!$user || !Hash::check($request->password, $user->password)) {
         return response()->json(['message' => 'Credenciales inválidas'], 401);
@@ -112,6 +110,7 @@ public function inicioSesion(Request $request)
         'user' => $user
     ]);
 }
+
 
 
 }
