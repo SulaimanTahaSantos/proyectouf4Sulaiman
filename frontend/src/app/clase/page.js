@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Button } from "@/components/ui/button"
 import { estudiantes } from "@/clases/clase"
 import { useRouter } from "next/navigation"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   Dialog,
   DialogContent,
@@ -19,58 +19,62 @@ import { Label } from "@/components/ui/label"
 import { Input } from "@/components/ui/input"
 import { Trash2, Pencil } from "lucide-react"
 
-
-
-
 export default function Clase() {
   const router = useRouter()
-  const [estudiantesList, setEstudiantesList] = useState(estudiantes)
-  const [showModal, setShowModal] = useState(false)
+  const [estudiantesList, setEstudiantesList] = useState([]);
+  const [showModal, setShowModal] = useState(false);
   const [newEstudiante, setNewEstudiante] = useState({
-    nombre: "",
-    apellidos: "",
-    grupo: "",
-    clase: "",
-  })
-  const [editEstudiante, setEditEstudiante] = useState(null)
+    nombre: '',
+    apellidos: '',
+    grupo: '',
+    clase: ''
+  });
+  const [editEstudiante, setEditEstudiante] = useState(null);
+
+  useEffect(() => {
+    fetchUsersAndGroupsAndClasses();
+  }, []);
+
+  const fetchUsersAndGroupsAndClasses = async () => {
+    try {
+      const response = await fetch('https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/fetchUsersAndGroupsAndClasses');
+      const data = await response.json();
+      console.log('Fetched data:', data);
+      setEstudiantesList(data);
+    } catch (error) {
+      console.error('Error fetching users:', error);
+    }
+  };
 
   const handleInputChange = (e) => {
-    const { name, value } = e.target
-    setNewEstudiante({
-      ...newEstudiante,
-      [name]: value,
-    })
-  }
+    const { name, value } = e.target;
+    setNewEstudiante(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
 
   const handleSubmit = (e) => {
-    e.preventDefault()
-
+    e.preventDefault();
     if (editEstudiante) {
-      setEstudiantesList((prevEstudiantes) =>
-        prevEstudiantes.map((estudiante) =>
-          estudiante === editEstudiante ? newEstudiante : estudiante
+      // Update existing student
+      setEstudiantesList(prev => 
+        prev.map(est => 
+          est.id === editEstudiante.id ? { ...est, ...newEstudiante } : est
         )
-      )
-      setEditEstudiante(null)
+      );
     } else {
-      setEstudiantesList((prevEstudiantes) => [...prevEstudiantes, newEstudiante])
+      // Add new student
+      setEstudiantesList(prev => [...prev, { id: Date.now(), ...newEstudiante }]);
     }
-
-    setShowModal(false)
-    setNewEstudiante({
-      nombre: "",
-      apellidos: "",
-      grupo: "",
-      clase: "",
-    })
-    console.log(editEstudiante ? "Estudiante actualizado:" : "Nuevo estudiante agregado:", newEstudiante)
-    console.log("Lista de estudiantes actualizada:", estudiantesList)
-  }
+    setShowModal(false);
+    setNewEstudiante({ nombre: '', apellidos: '', grupo: '', clase: '' });
+    setEditEstudiante(null);
+  };
 
   const handleClick = () => {
-    console.log("Volver a Home")
-    router.push("/home")
-  }
+    router.push('/home');
+  };
 
   const handleAddUser = () => {
     console.log("Añadir usuario a la clase")
@@ -86,7 +90,6 @@ export default function Clase() {
   }
 
   return (
-
     <main className="container mx-auto py-4 px-4 sm:py-10 sm:px-6">
       <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
         <Button onClick={handleClick} variant="outline" className="w-full sm:w-auto">

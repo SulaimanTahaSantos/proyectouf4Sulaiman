@@ -50,13 +50,13 @@ class User extends Authenticatable
         ];
     }
 
-        public function grupo()
+    public function grupo()
     {
-        return $this->hasOne(Grupo::class);
+        return $this->belongsTo(Grupo::class);
     }
 
     public function clase()
     {
-        return $this->hasOne(Clase::class);
+        return $this->belongsTo(Clase::class);
     }
 }
