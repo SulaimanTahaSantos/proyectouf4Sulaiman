@@ -19,7 +19,7 @@ Route::post('/users', [UserController::class, 'store']);
 Route::put('/users/{id}', [UserController::class, 'update']);
 Route::delete('/users/{id}', [UserController::class, 'destroy']);
 Route::post('/registro', [UserController::class, 'register']);
-Route::post('/login', [UserController::class, 'login']);
+Route::post('/inicioSesion', [UserController::class, 'inicioSesion']);
 // Route::get('/login', function () {
 //     return RetornarMensaje('Login successful');
 // });
