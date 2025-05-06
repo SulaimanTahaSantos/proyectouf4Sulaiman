@@ -29,7 +29,7 @@ export default function Login() {
 
      try {
          const response = await fetch(
-             "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/login",
+             "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/inicioSesion",
              {
                  method: "POST",
                  headers: {
@@ -39,19 +39,23 @@ export default function Login() {
              }
          );
 
-         if (!response.ok) {
-             throw new Error("Credenciales inválidas");
-         }
-
          const data = await response.json();
 
-         sessionStorage.setItem("userEmail", data.user.email);
-         sessionStorage.setItem("userName", data.user.name);
-         sessionStorage.setItem("userRol", data.user.rol); 
+         if (!response.ok) {
+             throw new Error(data.message || "Error al iniciar sesión");
+         }
 
-         router.push("/home");
+         if (data.user) {
+             sessionStorage.setItem("userEmail", data.user.email);
+             sessionStorage.setItem("userName", data.user.name);
+             sessionStorage.setItem("userRol", data.user.rol);
+             router.push("/home");
+         } else {
+             throw new Error("Respuesta inválida del servidor");
+         }
      } catch (err) {
-         alert("Email o contraseña incorrectos");
+         console.error("Error de inicio de sesión:", err);
+         alert(err.message || "Error al iniciar sesión");
      }
  };
 

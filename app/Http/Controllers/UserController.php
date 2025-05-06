@@ -95,20 +95,37 @@ class UserController extends Controller
 
     public function inicioSesion(Request $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required'
-        ]);
+        try {
+            $request->validate([
+                'email' => 'required|email',
+                'password' => 'required'
+            ]);
 
-        $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->first();
 
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Credenciales inválidas'], 401);
+            if (!$user || !Hash::check($request->password, $user->password)) {
+                return response()->json([
+                    'message' => 'Email o contraseña incorrectos',
+                    'error' => 'invalid_credentials'
+                ], 401);
+            }
+
+            return response()->json([
+                'message' => 'Inicio de sesión exitoso',
+                'user' => $user
+            ]);
+
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json([
+                'message' => 'Error de validación',
+                'errors' => $e->errors()
+            ], 422);
+        } catch (\Exception $e) {
+            \Log::error('Error en inicio de sesión: ' . $e->getMessage());
+            return response()->json([
+                'message' => 'Error al iniciar sesión',
+                'error' => $e->getMessage()
+            ], 500);
         }
-
-        return response()->json([
-            'message' => 'Inicio de sesión exitoso',
-            'user' => $user
-        ]);
     }
 }
