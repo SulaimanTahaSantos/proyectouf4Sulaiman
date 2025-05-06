@@ -52,11 +52,11 @@ class User extends Authenticatable
 
     public function grupo()
     {
-        return $this->belongsTo(Grupo::class);
+        return $this->hasOne(Grupo::class);
     }
 
     public function clase()
     {
-        return $this->belongsTo(Clase::class);
+        return $this->hasOne(Clase::class);
     }
 }

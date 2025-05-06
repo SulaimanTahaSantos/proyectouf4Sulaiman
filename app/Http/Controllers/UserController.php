@@ -114,8 +114,14 @@ public function inicioSesion(Request $request)
 public function fetchUsersAndGroupsAndClasses()
 {
     $users = User::with(['grupo', 'clase'])->get();
+    
+    // Para debug
+    foreach ($users as $user) {
+        \Log::info('User: ' . $user->name);
+        \Log::info('Grupo: ' . ($user->grupo ? $user->grupo->nombre : 'null'));
+        \Log::info('Clase: ' . ($user->clase ? $user->clase->nombre : 'null'));
+    }
 
     return response()->json($users);
-
 }
 }
