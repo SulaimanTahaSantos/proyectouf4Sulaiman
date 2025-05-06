@@ -111,6 +111,11 @@ public function inicioSesion(Request $request)
     ]);
 }
 
+public function fetchUsersAndGroupsAndClasses()
+{
+    $users = User::with(['grupo', 'clase'])->get();
 
+    return response()->json($users);
 
+}
 }

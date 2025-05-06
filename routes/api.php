@@ -23,4 +23,5 @@ Route::post('/inicioSesion', [UserController::class, 'inicioSesion']);
 // Route::get('/login', function () {
 //     return RetornarMensaje('Login successful');
 // });
+Route::get('/fetchUsersAndGroupsAndClasses', [UserController::class, 'fetchUsersAndGroupsAndClasses']);
 ?>
