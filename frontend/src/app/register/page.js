@@ -56,54 +56,44 @@ export default function Registro() {
         setError(null);
     };
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        setError(null);
-        setSuccess(false);
+   const handleSubmit = async (e) => {
+       e.preventDefault();
+       setError(null);
+       setSuccess(false);
 
-        try {
-            const response = await fetch(
-                "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/registro",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(formData),
-                }
-            );
+       try {
+           const response = await axios.post(
+               "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/registro",
+               formData
+           );
 
-            const data = await response.json();
+           if (response.status === 200 || response.status === 201) {
+               setSuccess(true);
+               setFormData({
+                   name: "",
+                   surname: "",
+                   email: "",
+                   password: "",
+                   rol: "user",
+                   dni: "",
+               });
 
-            if (!response.ok) {
-                let errorMsg = data.message || "Error al registrar el usuario";
-                if (data.errors) {
-                    const validationErrors = Object.values(data.errors).flat();
-                    errorMsg = validationErrors.join("\n");
-                }
-                throw new Error(errorMsg);
-            }
+               // Redirigir después de 2 segundos (ajusta si quieres otro comportamiento)
+               setTimeout(() => {
+                   window.location.href = "/"; // o la ruta que desees
+               }, 2000);
+           } else {
+               setError("Algo salió mal. Intenta de nuevo.");
+           }
+       } catch (err) {
+           if (err.response && err.response.data?.message) {
+               setError(err.response.data.message);
+           } else {
+               setError("Error al registrar. Inténtalo más tarde.");
+           }
+       }
+   };
 
-            setSuccess(true);
-            console.log("Usuario registrado:", data);
-
-            setFormData({
-                name: "",
-                surname: "",
-                email: "",
-                password: "",
-                rol: "",
-                dni: "",
-            });
-
-            setTimeout(() => {
-                window.location.href = "/login";
-            }, 2000);
-        } catch (error) {
-            console.error("Error al registrar el usuario:", error);
-            setError(error.message || "Error al procesar la solicitud");
-        }
-    };
 
 
     return (
@@ -335,36 +325,26 @@ export default function Registro() {
                         >
                             <Label
                                 htmlFor="rol"
-                                className="text-gray-700 font-medium hidden"
+                                className="text-gray-700 font-medium "
                             >
                                 Rol
                             </Label>
                             <div className="relative">
                                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 z-10">
-                                    <LucideUsers className="w-5 h-5 hidden" />
+                                    <LucideUsers className="w-5 h-5" />
                                 </div>
-                                <Select
+                                <Input
+                                    type="text"
+                                    id="rol"
+                                    name="rol"
                                     value={formData.rol}
-                                    onValueChange={handleRolChange}
-                                >
-                                    <SelectTrigger
-                                        id="rol"
-                                        className="pl-10 py-5 bg-white border-gray-200  hidden"
-                                    >
-                                        <SelectValue placeholder="Selecciona un rol" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="admin">
-                                            Admin
-                                        </SelectItem>
-                                        <SelectItem value="user">
-                                            Usuario
-                                        </SelectItem>
-                                        <SelectItem value="profesor">
-                                            Profesor
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
+                                    onChange={handleChange}
+                                    placeholder="user"
+                                    className="pl-10 py-5 bg-white border-gray-200"
+                                    required
+                                    
+                                />
+                                
                             </div>
                         </motion.div>
 

@@ -29,7 +29,7 @@ export default function Login() {
 
      try {
          const response = await fetch(
-             "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/inicioSesion",
+             "https://soothing-magic-production.up.railway.app/api/login",
              {
                  method: "POST",
                  headers: {
