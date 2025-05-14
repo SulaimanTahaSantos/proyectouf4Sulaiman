@@ -34,7 +34,7 @@ export default function Registro() {
         surname: "",
         email: "",
         password: "",
-        rol: "user", // Default value that matches backend validation
+        rol: "",
         dni: "",
     });
 
@@ -57,63 +57,60 @@ export default function Registro() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Create a copy of the form data to ensure we're sending the exact format expected
-        const formPayload = {
-            name: formData.name,
-            surname: formData.surname,
-            email: formData.email,
-            password: formData.password,
-            rol: formData.rol,
-            dni: formData.dni,
-        };
-
-        console.log("Form data", formPayload);
+        const formData = new FormData(e.target);
+        const data = Object.fromEntries(formData);
+        console.log("Form data", data);
         setError(null);
         setSuccess(false);
 
-        try {
-            const url =
-                "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/registro";
-            const respuesta = await fetch(url, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    Accept: "application/json",
-                },
-                body: JSON.stringify(formPayload),
-            });
+        async function registerUser() {
+            try {
+                const url =
+                    "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/registro";
+                const respuesta = await fetch(url, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Accept: "application/json",
+                    },
+                    body: JSON.stringify(data),
+                });
 
-            const respuestaJson = await respuesta.json();
-            console.log(respuestaJson);
+                const respuestaJson = await respuesta.json();
+                console.log(respuestaJson);
 
-            if (respuesta.status === 201 || respuesta.status === 200) {
-                setSuccess(true);
-                setTimeout(() => {
-                    window.location.href = "/";
-                }, 2000);
-            } else {
-                if (respuestaJson.errors) {
-                    // Format validation errors for display
-                    const errorMessages = Object.values(
-                        respuestaJson.errors
-                    ).flat();
-                    setError(errorMessages.join(", "));
-                } else if (respuestaJson.error) {
-                    setError(respuestaJson.error);
-                } else if (respuestaJson.message) {
-                    setError(respuestaJson.message);
+                // Verificar código 201 (Created) para registro exitoso
+                if (respuesta.status === 201) {
+                    setSuccess(true);
+                    setTimeout(() => {
+                        window.location.href = "/";
+                    }, 2000);
                 } else {
-                    setError(
-                        "Error al registrar usuario. Por favor intente de nuevo."
-                    );
+                    // Manejar diferentes tipos de errores
+                    if (respuesta.status === 422) {
+                        // Error de validación
+                        const primerError = Object.values(respuestaJson)[0];
+                        setError(
+                            Array.isArray(primerError)
+                                ? primerError[0]
+                                : respuestaJson.error || "Error de validación"
+                        );
+                    } else {
+                        // Otros errores
+                        setError(
+                            respuestaJson.error ||
+                                respuestaJson.message ||
+                                "Error al registrar usuario"
+                        );
+                    }
                 }
+            } catch (error) {
+                console.error("Error en la solicitud:", error);
+                setError("Error de conexión. Por favor, inténtalo más tarde.");
             }
-        } catch (error) {
-            console.error("Error al registrar:", error);
-            setError(
-                "Error de conexión. Por favor verifique su conexión a internet."
-            );
         }
+
+        registerUser();
     };
 
     return (
@@ -345,7 +342,7 @@ export default function Registro() {
                         >
                             <Label
                                 htmlFor="rol"
-                                className="text-gray-700 font-medium"
+                                className="text-gray-700 font-medium "
                             >
                                 Rol
                             </Label>
@@ -353,26 +350,18 @@ export default function Registro() {
                                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 z-10">
                                     <LucideUsers className="w-5 h-5" />
                                 </div>
-                                <Select
+                                <Input
+                                    type="text"
+                                    id="rol"
+                                    name="rol"
                                     value={formData.rol}
-                                    onValueChange={handleRolChange}
+                                    onChange={handleChange}
+                                    placeholder="user"
+                                    className="pl-10 py-5 bg-white border-gray-200"
                                     required
-                                >
-                                    <SelectTrigger className="pl-10 py-5 bg-white border-gray-200">
-                                        <SelectValue placeholder="Selecciona un rol" />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value="user">
-                                            Usuario
-                                        </SelectItem>
-                                        <SelectItem value="alumno">
-                                            Alumno
-                                        </SelectItem>
-                                        <SelectItem value="admin">
-                                            Administrador
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
+                                    
+                                />
+                                
                             </div>
                         </motion.div>
 
