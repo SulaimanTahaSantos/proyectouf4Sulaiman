@@ -24,7 +24,6 @@ import {
     LucideUsers,
     CreditCardIcon as LucideIdCard,
 } from "lucide-react";
-import axios from "axios";
 
 export default function Registro() {
     const [showPassword, setShowPassword] = useState(false);
@@ -56,45 +55,45 @@ export default function Registro() {
         setError(null);
     };
 
-   const handleSubmit = async (e) => {
-       e.preventDefault();
-       setError(null);
-       setSuccess(false);
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError(null);
+        setSuccess(false);
 
-       try {
-           const response = await axios.post(
-               "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/registro",
-               formData
-           );
+        try {
+            const response = await fetch(
+                "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/registro",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(formData),
+                }
+            );
 
-           if (response.status === 200 || response.status === 201) {
-               setSuccess(true);
-               setFormData({
-                   name: "",
-                   surname: "",
-                   email: "",
-                   password: "",
-                   rol: "user",
-                   dni: "",
-               });
+            if (response.ok) {
+                setSuccess(true);
+                setFormData({
+                    name: "",
+                    surname: "",
+                    email: "",
+                    password: "",
+                    rol: "user",
+                    dni: "",
+                });
 
-               // Redirigir después de 2 segundos (ajusta si quieres otro comportamiento)
-               setTimeout(() => {
-                   window.location.href = "/"; // o la ruta que desees
-               }, 2000);
-           } else {
-               setError("Algo salió mal. Intenta de nuevo.");
-           }
-       } catch (err) {
-           if (err.response && err.response.data?.message) {
-               setError(err.response.data.message);
-           } else {
-               setError("Error al registrar. Inténtalo más tarde.");
-           }
-       }
-   };
-
-
+                setTimeout(() => {
+                    window.location.href = "/";
+                }, 2000);
+            } else {
+                const errorData = await response.json();
+                setError(errorData.message || "Algo salió mal. Intenta de nuevo.");
+            }
+        } catch (err) {
+            setError("Error al registrar. Inténtalo más tarde.");
+        }
+    };
 
     return (
         <div className="min-h-screen flex flex-col md:flex-row">
