@@ -34,7 +34,7 @@ export default function Registro() {
         surname: "",
         email: "",
         password: "",
-        rol: "",
+        rol: "user", // Default value that matches backend validation
         dni: "",
     });
 
@@ -57,41 +57,62 @@ export default function Registro() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        // Create a copy of the form data to ensure we're sending the exact format expected
+        const formPayload = {
+            name: formData.name,
+            surname: formData.surname,
+            email: formData.email,
+            password: formData.password,
+            rol: formData.rol,
+            dni: formData.dni,
+        };
+
+        console.log("Form data", formPayload);
         setError(null);
         setSuccess(false);
 
         try {
-            const response = await fetch(
-                "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/registro",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(formData),
-                }
-            );
+            const url =
+                "https://proyectouf4sulaiman-production-c1ba.up.railway.app/api/registro";
+            const respuesta = await fetch(url, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Accept: "application/json",
+                },
+                body: JSON.stringify(formPayload),
+            });
 
-            if (response.ok) {
+            const respuestaJson = await respuesta.json();
+            console.log(respuestaJson);
+
+            if (respuesta.status === 201 || respuesta.status === 200) {
                 setSuccess(true);
-                setFormData({
-                    name: "",
-                    surname: "",
-                    email: "",
-                    password: "",
-                    rol: "user",
-                    dni: "",
-                });
-
                 setTimeout(() => {
                     window.location.href = "/";
                 }, 2000);
             } else {
-                const errorData = await response.json();
-                setError(errorData.message || "Algo salió mal. Intenta de nuevo.");
+                if (respuestaJson.errors) {
+                    // Format validation errors for display
+                    const errorMessages = Object.values(
+                        respuestaJson.errors
+                    ).flat();
+                    setError(errorMessages.join(", "));
+                } else if (respuestaJson.error) {
+                    setError(respuestaJson.error);
+                } else if (respuestaJson.message) {
+                    setError(respuestaJson.message);
+                } else {
+                    setError(
+                        "Error al registrar usuario. Por favor intente de nuevo."
+                    );
+                }
             }
-        } catch (err) {
-            setError("Error al registrar. Inténtalo más tarde.");
+        } catch (error) {
+            console.error("Error al registrar:", error);
+            setError(
+                "Error de conexión. Por favor verifique su conexión a internet."
+            );
         }
     };
 
@@ -324,7 +345,7 @@ export default function Registro() {
                         >
                             <Label
                                 htmlFor="rol"
-                                className="text-gray-700 font-medium "
+                                className="text-gray-700 font-medium"
                             >
                                 Rol
                             </Label>
@@ -332,18 +353,26 @@ export default function Registro() {
                                 <div className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 z-10">
                                     <LucideUsers className="w-5 h-5" />
                                 </div>
-                                <Input
-                                    type="text"
-                                    id="rol"
-                                    name="rol"
+                                <Select
                                     value={formData.rol}
-                                    onChange={handleChange}
-                                    placeholder="user"
-                                    className="pl-10 py-5 bg-white border-gray-200"
+                                    onValueChange={handleRolChange}
                                     required
-                                    
-                                />
-                                
+                                >
+                                    <SelectTrigger className="pl-10 py-5 bg-white border-gray-200">
+                                        <SelectValue placeholder="Selecciona un rol" />
+                                    </SelectTrigger>
+                                    <SelectContent>
+                                        <SelectItem value="user">
+                                            Usuario
+                                        </SelectItem>
+                                        <SelectItem value="alumno">
+                                            Alumno
+                                        </SelectItem>
+                                        <SelectItem value="admin">
+                                            Administrador
+                                        </SelectItem>
+                                    </SelectContent>
+                                </Select>
                             </div>
                         </motion.div>
 
