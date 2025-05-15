@@ -13,7 +13,11 @@ class UserController extends Controller
 {
     public function index(){
         $users = User::all();
-        return response()->json($users);
+        if($users){
+            return response()->json($users);
+        } else {
+            return response()->json(['message' => 'No users found'], 404);
+        }
     }
     public function show($id){
         $user = User::find($id);
