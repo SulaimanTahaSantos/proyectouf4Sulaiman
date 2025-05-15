@@ -9,6 +9,7 @@ use Illuminate\Notifications\Notifiable;
 use App\Models\Grupo;
 use App\Models\Clase;
 use Tymon\JWTAuth\Contracts\JWTSubject;
+use App\Models\Perfil;
 
 class User extends Authenticatable implements JWTSubject
 {
@@ -54,12 +55,31 @@ class User extends Authenticatable implements JWTSubject
     public function grupo()
     {
         return $this->hasOne(Grupo::class);
+        return $this->belongsToMany(Grupo::class, 'cursar')->withTimestamps();
+
     }
 
     public function clase()
     {
         return $this->hasOne(Clase::class);
     }
+
+    public function perfil()
+    {
+    return $this->belongsTo(Perfil::class);
+    
+    }
+
+    public function cursars()
+    {
+    return $this->hasMany(Cursar::class);
+    }
+
+    public function gruposActuales()
+    {
+    return $this->belongsToMany(Grupo::class, 'cursars')->withTimestamps();
+    }
+
       public function getJWTIdentifier()
     {
         return $this->getKey();
